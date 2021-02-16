@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+import json
+
+with open('denver-post.json', 'r', encoding='utf8') as denver_post_json_file:
+  denver_post = json.load(denver_post_json_file)
+
+with open('index.html.template', 'r', encoding='utf8') as template_file:
+  html_template = template_file.read()
+
+with open('link-item.html.template', 'r', encoding='utf8') as template_file:
+  link_item_template = template_file.read()
+
+headline_list_items = [link_item_template
+                       .replace('{{ url }}', item.get('url'))
+                       .replace('{{ title }}', item.get('title'))
+                       for item in denver_post['items']]
+headline_list = '<ul class="list pl0">' + ''.join(headline_list_items) + '</ul>'
+html = html_template.replace('{{ denver_post }}', headline_list)
+
+with open('docs/index.html', 'w', encoding='utf8') as html_file:
+  html_file.write(html)
