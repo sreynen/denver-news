@@ -20,41 +20,33 @@ json_feed = {
 
 now = pytz.utc.localize(datetime.now()).isoformat()
 
-for link in html.select('div.story__meta a.story__link'):
-    json_feed['items'].append({
-        'id': 'https://www.9news.com/' + link['href'],
-        'url': 'https://www.9news.com/' + link['href'],
+unique_items = {}
+
+def item_from_link(link, now):
+    url = link['href']
+    if url[0] == '/':
+        url = 'https://www.9news.com' + url
+    return {
+        'id': url,
+        'url': url,
         'title': ' '.join(link.stripped_strings),
         'date_published': now,
         'date_modified': now
-    })
+    }
+
+for link in html.select('div.story__meta a.story__link'):
+    unique_items[link['href']] = item_from_link(link, now)
 
 for link in html.select('li.headline-list__item a.headline-list__title'):
-    json_feed['items'].append({
-        'id': 'https://www.9news.com/' + link['href'],
-        'url': 'https://www.9news.com/' + link['href'],
-        'title': ' '.join(link.stripped_strings),
-        'date_published': now,
-        'date_modified': now
-    })
+    unique_items[link['href']] = item_from_link(link, now)
 
 for link in html.select('li.carousel__item a.carousel__description'):
-    json_feed['items'].append({
-        'id': 'https://www.9news.com/' + link['href'],
-        'url': 'https://www.9news.com/' + link['href'],
-        'title': ' '.join(link.stripped_strings),
-        'date_published': now,
-        'date_modified': now
-    })
+    unique_items[link['href']] = item_from_link(link, now)
 
 for link in html.select('li.story-list__item a.story-list__title-link'):
-    json_feed['items'].append({
-        'id': 'https://www.9news.com/' + link['href'],
-        'url': 'https://www.9news.com/' + link['href'],
-        'title': ' '.join(link.stripped_strings),
-        'date_published': now,
-        'date_modified': now
-    })
+    unique_items[link['href']] = item_from_link(link, now)
+
+json_feed['items'] = list(unique_items.values())
 
 with open('9news.json', 'w', encoding='utf8') as json_file:
     json.dump(json_feed, json_file)
