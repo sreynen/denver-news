@@ -29,9 +29,10 @@ jobs:
     - name: Generate HTML
       run: |-
         ./generate_html
-    - name: Copy Denver Post JSON file
+    - name: Copy JSON files
       run: |-
         cp ./denver-post.json ./docs/denver-post.json
+        cp ./9news.json ./docs/9news.json
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
