@@ -23,6 +23,9 @@ jobs:
     - name: Scrape Denver Post
       run: |-
         ./scrape_denver_post
+    - name: Scrape 9News
+      run: |-
+        ./scrape_9news
     - name: Generate HTML
       run: |-
         ./generate_html

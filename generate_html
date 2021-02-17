@@ -5,18 +5,30 @@ import json
 with open('denver-post.json', 'r', encoding='utf8') as denver_post_json_file:
   denver_post = json.load(denver_post_json_file)
 
+with open('9news.json', 'r', encoding='utf8') as nine_news_json_file:
+  nine_news = json.load(nine_news_json_file)
+
 with open('index.html.template', 'r', encoding='utf8') as template_file:
   html_template = template_file.read()
+
+with open('link-item-list.html.template', 'r', encoding='utf8') as template_file:
+  link_item_list_template = template_file.read()
 
 with open('link-item.html.template', 'r', encoding='utf8') as template_file:
   link_item_template = template_file.read()
 
-headline_list_items = [link_item_template
-                       .replace('{{ url }}', item.get('url'))
-                       .replace('{{ title }}', item.get('title'))
-                       for item in denver_post['items']]
-headline_list = '<ul class="list pl0">' + ''.join(headline_list_items) + '</ul>'
-html = html_template.replace('{{ denver_post }}', headline_list)
+def insert_headlines(template, placeholder, headline_items):
+    list_items = [link_item_template
+                  .replace('{{ url }}', item.get('url'))
+                  .replace('{{ title }}', item.get('title'))
+                  for item in headline_items]
+    headline_list = link_item_list_template.replace('{{ items }}',
+                                                    ''.join(list_items))
+    return template.replace(placeholder, headline_list)
+
+html = insert_headlines(html_template, '{{ denver_post }}',
+                        denver_post['items'])
+html = insert_headlines(html, '{{ 9news }}', nine_news['items'])
 
 with open('docs/index.html', 'w', encoding='utf8') as html_file:
   html_file.write(html)

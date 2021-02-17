@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+
+from datetime import datetime
+import json
+
+from bs4 import BeautifulSoup
+import pytz
+import requests
+
+response = requests.get('https://www.9news.com/local')
+html = BeautifulSoup(response.text, 'html.parser')
+
+json_feed = {
+    'version': 'https://jsonfeed.org/version/1.1',
+    'title': '9News: Local',
+    'home_page_url': 'https://sreynen.github.io/denver-news/',
+    'feed_url': 'https://sreynen.github.io/denver-news/9news.json',
+    'items': []
+}
+
+now = pytz.utc.localize(datetime.now()).isoformat()
+
+for link in html.select('div.story__meta a.story__link'):
+    json_feed['items'].append({
+        'id': 'https://www.9news.com/' + link['href'],
+        'url': 'https://www.9news.com/' + link['href'],
+        'title': ' '.join(link.stripped_strings),
+        'date_published': now,
+        'date_modified': now
+    })
+
+for link in html.select('li.headline-list__item a.headline-list__title'):
+    json_feed['items'].append({
+        'id': 'https://www.9news.com/' + link['href'],
+        'url': 'https://www.9news.com/' + link['href'],
+        'title': ' '.join(link.stripped_strings),
+        'date_published': now,
+        'date_modified': now
+    })
+
+for link in html.select('li.carousel__item a.carousel__description'):
+    json_feed['items'].append({
+        'id': 'https://www.9news.com/' + link['href'],
+        'url': 'https://www.9news.com/' + link['href'],
+        'title': ' '.join(link.stripped_strings),
+        'date_published': now,
+        'date_modified': now
+    })
+
+for link in html.select('li.story-list__item a.story-list__title-link'):
+    json_feed['items'].append({
+        'id': 'https://www.9news.com/' + link['href'],
+        'url': 'https://www.9news.com/' + link['href'],
+        'title': ' '.join(link.stripped_strings),
+        'date_published': now,
+        'date_modified': now
+    })
+
+with open('9news.json', 'w', encoding='utf8') as json_file:
+    json.dump(json_feed, json_file)
