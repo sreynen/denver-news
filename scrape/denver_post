@@ -14,9 +14,9 @@ def timestruct_to_rfc3339(timestruct):
 rss_feed = feedparser.parse('https://www.denverpost.com/news/colorado/feed/')
 json_feed = {
     'version': 'https://jsonfeed.org/version/1.1',
-    'title': 'Denver Post: Colorado News',
+    'title': 'Denverite: Denver News',
     'home_page_url': 'https://sreynen.github.io/denver-news/',
-    'feed_url': 'https://sreynen.github.io/denver-news/denver-post.json',
+    'feed_url': 'https://sreynen.github.io/denver-news/denverite.json',
     'items': []
 }
 
@@ -26,8 +26,8 @@ for entry in rss_feed.entries:
         'url': entry.link,
         'title': entry.title,
         'date_published': timestruct_to_rfc3339(entry.published_parsed),
-        'date_modifie': timestruct_to_rfc3339(entry.updated_parsed)
+        'date_modified': timestruct_to_rfc3339(entry.updated_parsed)
     })
 
-with open('denver-post.json', 'w', encoding='utf8') as json_file:
+with open('../json/denver-post.json', 'w', encoding='utf8') as json_file:
     json.dump(json_feed, json_file)

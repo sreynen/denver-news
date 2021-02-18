@@ -2,11 +2,14 @@
 
 import json
 
-with open('denver-post.json', 'r', encoding='utf8') as denver_post_json_file:
+with open('./json/denver-post.json', 'r', encoding='utf8') as denver_post_json_file:
   denver_post = json.load(denver_post_json_file)
 
-with open('9news.json', 'r', encoding='utf8') as nine_news_json_file:
+with open('./json/9news.json', 'r', encoding='utf8') as nine_news_json_file:
   nine_news = json.load(nine_news_json_file)
+
+with open('./json/denverite.json', 'r', encoding='utf8') as denverite_json_file:
+  denverite = json.load(denverite_json_file)
 
 with open('index.html.template', 'r', encoding='utf8') as template_file:
   html_template = template_file.read()
@@ -29,6 +32,7 @@ def insert_headlines(template, placeholder, headline_items):
 html = insert_headlines(html_template, '{{ denver_post }}',
                         denver_post['items'])
 html = insert_headlines(html, '{{ 9news }}', nine_news['items'])
+html = insert_headlines(html, '{{ denverite }}', denverite['items'])
 
 with open('docs/index.html', 'w', encoding='utf8') as html_file:
   html_file.write(html)

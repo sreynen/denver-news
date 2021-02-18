@@ -48,5 +48,5 @@ for link in html.select('li.story-list__item a.story-list__title-link'):
 
 json_feed['items'] = list(unique_items.values())
 
-with open('9news.json', 'w', encoding='utf8') as json_file:
+with open('../json/9news.json', 'w', encoding='utf8') as json_file:
     json.dump(json_feed, json_file)

@@ -18,5 +18,9 @@
         <h2 class="f2">9News Local</h2>
         {{ 9news }}
       </div>
+      <div class="fl w-50 pa2">
+        <h2 class="f2">Denverite Denver</h2>
+        {{ denverite }}
+      </div>
   </body>
 </html>

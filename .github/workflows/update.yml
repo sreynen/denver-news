@@ -22,17 +22,21 @@ jobs:
         pip install -r requirements.txt
     - name: Scrape Denver Post
       run: |-
-        ./scrape_denver_post
+        ./scrape/denver_post
     - name: Scrape 9News
       run: |-
-        ./scrape_9news
+        ./scrape/9news
+    - name: Scrape Denverite
+      run: |-
+        ./scrape/denverite
     - name: Generate HTML
       run: |-
         ./generate_html
     - name: Copy JSON files
       run: |-
-        cp ./denver-post.json ./docs/denver-post.json
-        cp ./9news.json ./docs/9news.json
+        cp ./json/denver-post.json ./docs/denver-post.json
+        cp ./json/9news.json ./docs/9news.json
+        cp ./json/denverite.json ./docs/denverite.json
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
