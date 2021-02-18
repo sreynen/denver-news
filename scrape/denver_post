@@ -29,5 +29,5 @@ for entry in rss_feed.entries:
         'date_modified': timestruct_to_rfc3339(entry.updated_parsed)
     })
 
-with open('../json/denver-post.json', 'w', encoding='utf8') as json_file:
+with open('./json/denver-post.json', 'w', encoding='utf8') as json_file:
     json.dump(json_feed, json_file)
