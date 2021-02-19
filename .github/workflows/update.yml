@@ -1,4 +1,4 @@
-name: Update increment value
+name: Update news
 
 on:
   push:
