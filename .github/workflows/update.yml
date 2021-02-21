@@ -32,6 +32,9 @@ jobs:
     - name: Generate HTML
       run: |-
         ./generate_html
+    - name: Generate JSON
+      run: |-
+        ./generate_json
     - name: Copy JSON files
       run: |-
         cp ./json/denver-post.json ./docs/denver-post.json

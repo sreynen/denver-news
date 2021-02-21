@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+
+import json
+
+with open('./json/denver-post.json', 'r', encoding='utf8') as denver_post_json_file:
+  denver_post = json.load(denver_post_json_file)
+
+with open('./json/9news.json', 'r', encoding='utf8') as nine_news_json_file:
+  nine_news = json.load(nine_news_json_file)
+
+with open('./json/denverite.json', 'r', encoding='utf8') as denverite_json_file:
+  denverite = json.load(denverite_json_file)
+
+json_feed = {
+    'version': 'https://jsonfeed.org/version/1.1',
+    'title': 'Denver News',
+    'home_page_url': 'https://sreynen.github.io/denver-news/',
+    'feed_url': 'https://sreynen.github.io/denver-news/feed.json',
+    'items': []
+}
+
+json_feed['items'] += denver_post.get('items', [])
+json_feed['items'] += nine_news.get('items', [])
+json_feed['items'] += denverite.get('items', [])
+
+json_feed['items'] = sorted(json_feed['items'],
+                            key=lambda item: item.get('date_published', ''),
+                            reverse=True)
+
+with open('./docs/feed.json', 'w', encoding='utf8') as json_file:
+    json.dump(json_feed, json_file)
