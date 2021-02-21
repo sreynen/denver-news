@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 from datetime import datetime
-import json
 
 from bs4 import BeautifulSoup
 import pytz
 import requests
+
+from utils import update_feed
+
 
 response = requests.get('https://www.9news.com/local')
 html = BeautifulSoup(response.text, 'html.parser')
@@ -48,5 +50,4 @@ for link in html.select('li.story-list__item a.story-list__title-link'):
 
 json_feed['items'] = list(unique_items.values())
 
-with open('./json/9news.json', 'w', encoding='utf8') as json_file:
-    json.dump(json_feed, json_file)
+update_feed('./json/9news.json', json_feed)

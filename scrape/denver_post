@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 from datetime import datetime
-import json
 from time import mktime
 
 import feedparser
 import pytz
+
+from utils import update_feed
+
 
 def timestruct_to_rfc3339(timestruct):
     return (pytz.utc.localize(datetime.fromtimestamp(mktime(timestruct)))
@@ -29,5 +31,4 @@ for entry in rss_feed.entries:
         'date_modified': timestruct_to_rfc3339(entry.updated_parsed)
     })
 
-with open('./json/denver-post.json', 'w', encoding='utf8') as json_file:
-    json.dump(json_feed, json_file)
+update_feed('./json/denver-post.json', json_feed)
